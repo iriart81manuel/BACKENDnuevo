@@ -1,15 +1,15 @@
-import server from "./services/server.js";
-import { initWsServer, getWsServer } from "./services/socket.js";
-import { DBService } from "./classes/db.js";
-
-const port = 8080;
+import "dotenv/config";
+import Server from "./services/server.js";
+import { initMongoDB } from "./services/database.js";
 
 const init = async () => {
-  await DBService.init();
-  initWsServer(server);
-  server.listen(port, () => console.log(`Server up port ${port}`));
-  server.on("error", (error) => {
-    console.log("Server catch!", error);
+  await initMongoDB();
+  const puerto = process.env.PORT || 8080;
+
+  Server.listen(puerto, () => console.log(`Server up en puerto ${puerto}`));
+
+  Server.on("error", (error) => {
+    console.log("Catch de error en servidor!", error);
   });
 };
 
